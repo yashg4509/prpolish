@@ -11,9 +11,9 @@
 <!-- BADGES -->
 <p align="center">
   <a href="https://pypi.org/project/prpolish/"><img src="https://img.shields.io/pypi/v/prpolish?style=for-the-badge&color=blue" alt="PyPI version"></a>
-  <a href="https://github.com/YOUR_GITHUB/prpolish/actions"><img src="https://img.shields.io/github/actions/workflow/status/YOUR_GITHUB/prpolish/ci.yml?branch=main&style=for-the-badge" alt="Build Status"></a>
-  <a href="https://github.com/YOUR_GITHUB/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/YOUR_GITHUB/prpolish?style=for-the-badge&color=success" alt="License"></a>
-  <a href="https://github.com/YOUR_GITHUB/prpolish/stargazers"><img src="https://img.shields.io/github/stars/YOUR_GITHUB/prpolish?style=for-the-badge&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/yashg4509/prpolish/actions"><img src="https://img.shields.io/github/actions/workflow/status/yashg4509/prpolish/ci.yml?branch=main&style=for-the-badge" alt="Build Status"></a>
+  <a href="https://github.com/yashg4509/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yashg4509/prpolish?style=for-the-badge&color=success" alt="License"></a>
+  <a href="https://github.com/yashg4509/prpolish/stargazers"><img src="https://img.shields.io/github/stars/yashg4509/prpolish?style=for-the-badge&color=yellow" alt="Stars"></a>
 </p>
 
 ---
@@ -60,16 +60,14 @@ python -m prpolish.cli generate
 
 ```bash
 # Generate PR title and description
-python -m prpolish.cli generate [--template <str|path>] [--save, -s title|description|both] [--fast, -f]
+prpolish generate [--template <str|path>] [--save, -s title|description|both] [--fast, -f]
 
 # Generate only the PR title
-ython -m prpolish.cli generate-title [--template <str|path>] [--save, -s]
+prpolish generate-title [--template <str|path>] [--save, -s]
 
 # Generate only the PR description
-python -m prpolish.cli generate-desc [--template <str|path>] [--save, -s]
+prpolish generate-desc [--template <str|path>] [--save, -s]
 
-# Install and authenticate GitHub CLI
-ython -m prpolish.cli setup-gh
 ```
 </details>
 
@@ -96,24 +94,10 @@ If you already have a `pull_request_template.md`, it will automatically detect i
 
 ---
 
-## Project Structure
-
-```text
-prpolish/
-├── __init__.py
-├── cli.py
-├── pr_description.py
-├── vibe_check.py
-├── git_utils.py
-├── clipboard.py
-```
-
----
-
 ## <img src="https://twemoji.maxcdn.com/v/latest/svg/1f512.svg" width="24"/> License
 
 <p align="center">
-  <a href="https://github.com/YOUR_GITHUB/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/YOUR_GITHUB/prpolish?style=flat-square&color=success" alt="License"></a>
+  <a href="https://github.com/yashg4509/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yashg4509/prpolish?style=flat-square&color=success" alt="License"></a>
 </p>
 
 <p align="center">
