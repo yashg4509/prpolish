@@ -17,7 +17,7 @@ setup(
     author="Yash Gupta",
     author_email="ysgupta@wisc.edu",
     description="A CLI tool to generate PR titles and descriptions for Git repositories",
-    url="https://github.com/ysgupta/prpolish",
+    url="https://github.com/yashg4509/prpolish",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
