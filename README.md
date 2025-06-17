@@ -27,7 +27,7 @@
 
 ---
 
-## <img src="https://twemoji.maxcdn.com/v/latest/svg/1f4a1.svg" width="24"/> Features
+## Features
 
 - <b>PR Title & Description Generator:</b> AI-powered, context-aware, and customizable.
 - <b>Vibe Check Warnings:</b> Flags low-quality commits, missing tests, and more.
@@ -38,7 +38,7 @@
 
 ---
 
-## <img src="https://twemoji.maxcdn.com/v/latest/svg/1f680.svg" width="24"/> Quickstart
+## Quickstart
 
 ```bash
 # 1. Install dependencies
