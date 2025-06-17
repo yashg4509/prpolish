@@ -88,7 +88,7 @@ If you already have a `pull_request_template.md`, it will automatically detect i
 
 ---
 
-## <img src="https://twemoji.maxcdn.com/v/latest/svg/1f512.svg" width="24"/> License
+## License
 
 <p align="center">
   <a href="https://github.com/yashg4509/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yashg4509/prpolish?style=flat-square&color=success" alt="License"></a>
