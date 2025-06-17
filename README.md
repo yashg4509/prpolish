@@ -20,7 +20,7 @@
 
 <!-- DEMO GIF/IMAGE -->
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/6388707/235325123-2e7e6b8e-2e7e-4b7e-8e2e-2e7e6b8e2e7e.gif" alt="Demo" width="600"/>
+  COMING SOON
   <br/>
   <i>Above: Example of prpolish generating a beautiful PR description and running vibe checks</i>
 </p>
@@ -53,10 +53,7 @@ python -m prpolish.cli generate
 
 ---
 
-## <img src="https://twemoji.maxcdn.com/v/latest/svg/1f527.svg" width="24"/> CLI Commands
-
-<details>
-<summary><b>Show all commands & options</b></summary>
+## Commands
 
 ```bash
 # Generate PR title and description
@@ -69,7 +66,6 @@ prpolish generate-title [--template <str|path>] [--save, -s]
 prpolish generate-desc [--template <str|path>] [--save, -s]
 
 ```
-</details>
 
 ---
 
