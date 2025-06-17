@@ -5,6 +5,19 @@ import subprocess
 import tempfile
 import shutil
 import sys
+from git import Repo
+from git.exc import InvalidGitRepositoryError, NoSuchPathError
+
+# Helper decorator to require a git repo for commands
+def require_git_repo(f):
+    def wrapper(*args, **kwargs):
+        try:
+            Repo(os.getcwd())
+        except (InvalidGitRepositoryError, NoSuchPathError):
+            raise click.ClickException("This command must be run inside a Git repository.")
+        return f(*args, **kwargs)
+    wrapper.__name__ = f.__name__
+    return wrapper
 
 @click.group()
 def main():
@@ -15,6 +28,7 @@ def main():
 @click.option('--template', default=None, help='Custom PR description template (string or path to file)')
 @click.option('--save', '-s', is_flag=False, flag_value='both', default=None, expose_value=True, type=click.Choice(['title', 'description', 'both'], case_sensitive=False), help='Save PR title, description, or both to draft files. If used without an argument, saves both.')
 @click.option('--fast', '-f', is_flag=True, default=False, help='Automatically create the PR with no prompts')
+@require_git_repo
 def generate(template, save, fast):
     """
     Generate PR title/description and optionally run vibe checks or create a PR.
@@ -153,35 +167,6 @@ def generate(template, save, fast):
                 f.write(desc)
             click.echo(f"Saved to {draft_path}")
         return
-    if title_only:
-        click.echo(f"\n🔖 PR Title:\n{title}\n")
-        if click.confirm("Edit PR title?", default=False):
-            title = click.edit(title) or title
-            click.echo(f"\nEdited PR Title:\n{title}\n")
-        if save and save in ('title', 'both'):
-            draft_path = os.path.join(repo_path, "PR_TITLE_DRAFT.txt")
-            with open(draft_path, "w") as f:
-                f.write(title)
-            click.echo(f"Saved to {draft_path}")
-        if click.confirm("Copy to clipboard?", default=True):
-            clipboard.copy_to_clipboard(title)
-            click.echo("Copied to clipboard!")
-        return
-    if description_only:
-        click.echo(f"\n📝 PR Description:\n{desc}\n")
-        if click.confirm("Edit PR description in your editor?", default=False):
-            desc = edit_in_editor(desc)
-            click.echo(f"\nEdited PR Description:\n{desc}\n")
-        if save and save in ('description', 'both'):
-            draft_path = os.path.join(repo_path, "PR_DESCRIPTION_DRAFT.txt")
-            with open(draft_path, "w") as f:
-                f.write(desc)
-            click.echo(f"Saved to {draft_path}")
-        if click.confirm("Copy to clipboard?", default=True):
-            clipboard.copy_to_clipboard(desc)
-            click.echo("Copied to clipboard!")
-        return
-
     # Default: generate both
     click.echo(f"\n🔖 PR Title:\n{title}\n")
     if click.confirm("Edit PR title?", default=False):
@@ -242,6 +227,7 @@ def generate(template, save, fast):
 @main.command('generate-title')
 @click.option('--template', default=None, help='Custom PR title template (string or path to file)')
 @click.option('--save', '-s', is_flag=True, default=False, help='Save PR title to draft file')
+@require_git_repo
 def generate_title(template, save):
     """Generate only the PR title."""
     repo_path = os.getcwd()
@@ -272,6 +258,7 @@ def generate_title(template, save):
 @main.command('generate-desc')
 @click.option('--template', default=None, help='Custom PR description template (string or path to file)')
 @click.option('--save', '-s', is_flag=True, default=False, help='Save PR description to draft file')
+@require_git_repo
 def generate_desc(template, save):
     """Generate only the PR description."""
     repo_path = os.getcwd()

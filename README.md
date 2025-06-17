@@ -36,7 +36,7 @@
 
 ---
 
-## Quickstart
+## Installation
 
 ```bash
 # 1. Install dependencies
@@ -44,14 +44,11 @@ pip install -r requirements.txt
 
 # 2. (Optional) Install GitHub CLI for auto PR creation
 # https://cli.github.com/
-
-# 3. Run the CLI from your repo root
-python -m prpolish.cli generate
 ```
 
 ---
 
-## Commands
+## Usage
 
 ```bash
 # Generate PR title and description
@@ -64,6 +61,10 @@ prpolish generate-title [--template <str|path>] [--save, -s]
 prpolish generate-desc [--template <str|path>] [--save, -s]
 
 ```
+
+## Flags 
+`-save, -s`: allows you to save either the title, description, or both (default) to a draft file
+`--fast, -f`: automatically creates the PR and commits it
 
 ---
 
