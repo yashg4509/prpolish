@@ -6,3 +6,4 @@ tests/
 update.sh   
 .pypirc
 dist/
+venv/
