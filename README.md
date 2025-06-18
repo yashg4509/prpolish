@@ -63,8 +63,8 @@ prpolish generate-desc [--template <str|path>] [--save, -s]
 ```
 
 ## Flags 
-`-save, -s`: allows you to save either the title, description, or both (default) to a draft file <br>
-`--fast, -f`: automatically creates the PR and commits it
+- `-save, -s`: allows you to save either the title, description, or both (default) to a draft file
+- `--fast, -f`: automatically creates the PR and commits it
 
 ---
 
