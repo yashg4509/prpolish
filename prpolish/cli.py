@@ -39,10 +39,18 @@ def generate(template, save, fast):
     changed_files = git_utils.get_changed_files(repo_path)
     branch_name = git_utils.get_branch_name(repo_path)
 
+    # Warn if on main or master branch
+    if branch_name in ("main", "master"):
+        click.echo("[WARNING] You are on the main/master branch. It is recommended to create PRs from a feature branch.")
+
     # If no changes, skip LLM calls and output message
     if not commit_messages and not changed_files:
         click.echo("No changes detected on this branch.")
         return
+
+    # Require API key for LLM features
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise click.ClickException("\n[ERROR] The OPENAI_API_KEY environment variable is not set.\nPlease set it to use PR generation features. Example:\n\n    export OPENAI_API_KEY=sk-...\n")
 
     # --- PR Template Detection ---
     def find_github_pr_template(repo_path):
@@ -234,6 +242,14 @@ def generate_title(template, save):
     commit_messages = git_utils.get_commit_messages(repo_path)
     changed_files = git_utils.get_changed_files(repo_path)
     branch_name = git_utils.get_branch_name(repo_path)
+    # Warn if on main or master branch
+    if branch_name in ("main", "master"):
+        click.echo("[WARNING] You are on the main/master branch. It is recommended to create PRs from a feature branch.")
+    if not commit_messages and not changed_files:
+        click.echo("No changes detected on this branch.")
+        return
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise click.ClickException("\n[ERROR] The OPENAI_API_KEY environment variable is not set.\nPlease set it to use PR generation features. Example:\n\n    export OPENAI_API_KEY=sk-...\n")
     template_str = None
     if template:
         if os.path.isfile(template):
@@ -265,6 +281,14 @@ def generate_desc(template, save):
     commit_messages = git_utils.get_commit_messages(repo_path)
     changed_files = git_utils.get_changed_files(repo_path)
     branch_name = git_utils.get_branch_name(repo_path)
+    # Warn if on main or master branch
+    if branch_name in ("main", "master"):
+        click.echo("[WARNING] You are on the main/master branch. It is recommended to create PRs from a feature branch.")
+    if not commit_messages and not changed_files:
+        click.echo("No changes detected on this branch.")
+        return
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise click.ClickException("\n[ERROR] The OPENAI_API_KEY environment variable is not set.\nPlease set it to use PR generation features. Example:\n\n    export OPENAI_API_KEY=sk-...\n")
     template_str = None
     if template:
         if os.path.isfile(template):

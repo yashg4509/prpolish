@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="prpolish",
     packages=find_packages(),
-    version="0.2.3",
+    version="0.2.4",
     install_requires=[
         "click",
         "GitPython",

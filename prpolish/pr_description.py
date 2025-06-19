@@ -156,17 +156,14 @@ Format your response in Markdown with these section headings (do not add or remo
             input_tokens = usage.get("prompt_tokens", 0)
             output_tokens = usage.get("completion_tokens", 0)
             cost2 = (input_tokens / 1000 * 0.0015) + (output_tokens / 1000 * 0.002)
-            # Ensure all required sections are present
-            required_sections = ["# Summary", "# Related Resources", "# Changes", "# Testing", "# Out of Scope"]
-            if all(section in content for section in required_sections):
-                return content, cost1 + cost2
-            else:
-                # Fallback to heuristic if LLM output is missing sections
-                return generate_pr_description(commit_messages, changed_files, branch_name, template=template), cost1 + cost2
+            # Always use LLM output if available, even if some sections are missing
+            # Only use heuristics if LLM is unavailable or errors
+            return content, cost1 + cost2
         else:
             return f"[OpenAI API error: {response.text}]", cost1
     except Exception as e:
         return f"[OpenAI API error: {e}]", cost1
+    # Only fallback to heuristics if LLM is unavailable or errors
     return generate_pr_description(commit_messages, changed_files, branch_name, template=template), cost1
 
 def detect_related_resources(commit_messages: List[str], branch_name: str, changed_files: List[str]) -> List[str]:
@@ -254,6 +251,7 @@ def generate_pr_title(commit_messages: List[str], changed_files: List[str], bran
                 return msg.split("\n")[0].strip()
             # Otherwise, try to synthesize a conventional commit style
             # Guess type from keywords
+            prefix = ""  # Default to empty if no keyword matches
             lower = msg.lower()
             if "fix" in lower:
                 prefix = "fix: "
@@ -265,7 +263,6 @@ def generate_pr_title(commit_messages: List[str], changed_files: List[str], bran
                 prefix = "refactor: "
             elif "test" in lower:
                 prefix = "test: "
-          
             # Try to extract issue/ticket refs
             refs = re.findall(r"#\d+|[A-Z]{2,}-\d+", msg)
             ref_str = f" ({' '.join(refs)})" if refs else ""
@@ -346,8 +343,10 @@ You are an expert software engineer and code reviewer. Write a high-quality, pro
             input_tokens = usage.get("prompt_tokens", 0)
             output_tokens = usage.get("completion_tokens", 0)
             cost2 = (input_tokens / 1000 * 0.0015) + (output_tokens / 1000 * 0.002)
+            # Always use LLM output if available, even if some sections are missing
+            # Only use heuristics if LLM is unavailable or errors
             return content.split("\n")[0][:80], cost1 + cost2
         else:
-            return generate_pr_title(commit_messages, changed_files, branch_name, template=template), cost1
+            return f"[OpenAI API error: {response.text}]", cost1
     except Exception:
         return generate_pr_title(commit_messages, changed_files, branch_name, template=template), cost1 
