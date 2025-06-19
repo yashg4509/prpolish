@@ -13,20 +13,6 @@
 
 ---
 
-## 📚 Table of Contents
-- [Why prpolish?](#why-prpolish)
-- [Quickstart](#quickstart)
-- [Features](#features)
-- [How It Works](#how-it-works)
-- [CLI Usage](#cli-usage)
-- [Requirements](#requirements)
-- [Custom PR Templates](#custom-pr-templates)
-- [FAQ & Troubleshooting](#faq--troubleshooting)
-- [License](#license)
-- [Shoutout](#shoutout)
-
----
-
 ## 💡 Why prpolish?
 
 > Writing great pull requests is hard. Most devs (including us!) struggle with:
@@ -104,7 +90,7 @@ prpolish generate-desc [--template <str|path>] [--save, -s]
 - [OpenAI API key](https://platform.openai.com/account/api-keys) (for AI features)
 - [GitHub CLI](https://cli.github.com/) (for auto PR creation, optional)
 
-NOTE: Without an API key, the generations fall back on heuristic measures, but they are not as accurate usually.
+> Without an API key, the generations fall back on heuristic measures, but they are not as accurate usually.
 ---
 
 ## 📝 Custom PR Templates
@@ -147,7 +133,5 @@ _Made by [@yashg4509](https://github.com/yashg4509)_
 ## 🏆 Shoutout
 
 <div align="center" style="margin: 2em 0;">
-  <img src="https://graphite.dev/favicon.ico" width="32" height="32" alt="Graphite logo"/>
-  <br/>
   <b>Big thanks to <a href="https://graphite.dev/">Graphite</a> for their <a href="https://graphite.dev/guides/topic/pull-requests">excellent guides on PR best practices</a>, which inspired the prompts and structure in prpolish.</b>
 </div>
