@@ -57,8 +57,7 @@ prpolish generate
 2. **Generates PR content:**  
    Uses OpenAI GPT (if available) or smart heuristics to create a professional PR title and description.
 3. **Runs vibe checks:**  
-   Optionally, flags issues like vague commits or missing tests. <br/>
-   <sub>⚠️ <b>Note:</b> Vibe checks require an OpenAI API key and do <b>not</b> fall back to heuristics.</sub>
+   Optionally, flags issues like vague commits or missing tests. 
 4. **Lets you edit and save:**  
    Copy to clipboard, save drafts, or open in your editor.
 5. **Creates the PR:**  
@@ -90,7 +89,6 @@ prpolish generate-desc [--template <str|path>] [--save, -s]
 - [OpenAI API key](https://platform.openai.com/account/api-keys) (for AI features)
 - [GitHub CLI](https://cli.github.com/) (for auto PR creation, optional)
 
-> Without an API key, the generations fall back on heuristic measures, but they are not as accurate usually.
 ---
 
 ## 📝 Custom PR Templates
@@ -101,13 +99,6 @@ If a `pull_request_template.md` exists, prpolish will auto-detect and use it.
 ---
 
 ## ❓ FAQ & Troubleshooting
-
-<details>
-<summary><b>What if I don't have an OpenAI API key?</b></summary>
-
-- PR title/description generation will use smart heuristics instead of AI.
-- Vibe checks will not work without an API key.
-</details>
 
 <details>
 <summary><b>What if I don't have GitHub CLI (gh)?</b></summary>
