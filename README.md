@@ -1,54 +1,86 @@
-<!-- HERO SECTION -->
 <p align="center">
   <img src="https://img.shields.io/badge/AI%20PR%20Helper-%F0%9F%9A%80-blueviolet?style=for-the-badge" alt="AI PR Helper"/>
-</p>
-<h1 align="center">prpolish: AI-Powered PR Helper</h1>
-<p align="center">
-  <b>Supercharge your pull requests with AI-generated titles, descriptions, and quality checks!</b><br/>
-  <i>Make every PR shine ✨</i>
-</p>
-
-<!-- BADGES -->
-<p align="center">
   <a href="https://pypi.org/project/prpolish/"><img src="https://img.shields.io/pypi/v/prpolish?style=for-the-badge&color=blue" alt="PyPI version"></a>
   <a href="https://github.com/yashg4509/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yashg4509/prpolish?style=for-the-badge&color=success" alt="License"></a>
 </p>
 
+<h1 align="center">prpolish: AI-Powered Pull Request Helper 🚀</h1>
+
+<p align="center">
+  <b>Supercharge your GitHub PRs with AI-generated titles, descriptions, and quality checks.</b><br/>
+  <i>Make every PR shine ✨</i>
+</p>
+
 ---
 
-<!-- DEMO GIF/IMAGE -->
-<p align="center">
-  COMING SOON
-  <br/>
-  <i>Above: Example of prpolish generating a beautiful PR description and running vibe checks</i>
-</p>
+## 📚 Table of Contents
+- [Why prpolish?](#why-prpolish)
+- [Quickstart](#quickstart)
+- [Features](#features)
+- [How It Works](#how-it-works)
+- [CLI Usage](#cli-usage)
+- [Requirements](#requirements)
+- [Custom PR Templates](#custom-pr-templates)
+- [FAQ & Troubleshooting](#faq--troubleshooting)
+- [License](#license)
+- [Shoutout](#shoutout)
+
+---
+
+## 💡 Why prpolish?
+
+> Writing great pull requests is hard. Most devs (including us!) struggle with:
+> - Vague or low-effort PR titles and descriptions
+> - Forgetting to link issues, docs, or tickets
+> - Missing tests or unclear testing instructions
+> - Inconsistent PR templates across teams
+
+**prpolish** fixes this by using AI (OpenAI GPT) to generate high-quality, context-aware PR titles and descriptions, and to run "vibe checks" for PR quality—all from your terminal.
+
+---
+
+## ⚡ Quickstart
+
+```bash
+pip install prpolish
+export OPENAI_API_KEY=sk-...
+prpolish generate
+```
+
+- Instantly get a polished PR title and description, ready to copy or edit.
+- Optionally, run vibe checks to catch low-quality commits or missing tests.
+- Use your own PR templates, or let prpolish auto-detect them.
 
 ---
 
 ## Features
 
-- <b>PR Title & Description Generator:</b> AI-powered, context-aware, and customizable.
-- <b>Vibe Check Warnings:</b> Flags low-quality commits, missing tests, and more.
-- <b>CLI Interface:</b> Simple, interactive, and scriptable.
-- <b>Custom Templates:</b> Use your own PR templates (string or file).
-- <b>LLM-Powered:</b> Uses OpenAI GPT for best results, with fallback heuristics.
-- <b>Failsafe Defaults:</b> Always allows user editing and review.
+- **AI-Powered PR Title & Description Generator**: Context-aware, customizable, and always editable.
+- **Vibe Check Warnings**: Flags low-quality commits, missing tests, and more.
+- **CLI Interface**: Simple, interactive, and scriptable.
+- **Custom Templates**: Use your own PR templates (string or file).
+- **LLM-Powered, with Fallbacks**: Uses OpenAI GPT for best results, with smart heuristics if no API key.
+- **Failsafe Defaults**: Always allows user editing and review.
 
 ---
 
-## Installation
+## 🛠️ How It Works
 
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. (Optional) Install GitHub CLI for auto PR creation
-# https://cli.github.com/
-```
+1. **Analyzes your branch:**  
+   Reads your commit messages, changed files, and branch name.
+2. **Generates PR content:**  
+   Uses OpenAI GPT (if available) or smart heuristics to create a professional PR title and description.
+3. **Runs vibe checks:**  
+   Optionally, flags issues like vague commits or missing tests. <br/>
+   <sub>⚠️ <b>Note:</b> Vibe checks require an OpenAI API key and do <b>not</b> fall back to heuristics.</sub>
+4. **Lets you edit and save:**  
+   Copy to clipboard, save drafts, or open in your editor.
+5. **Creates the PR:**  
+   Pushes your branch and opens a PR via GitHub CLI (optional).
 
 ---
 
-## Usage
+## 💻 CLI Usage
 
 ```bash
 # Generate PR title and description
@@ -59,42 +91,63 @@ prpolish generate-title [--template <str|path>] [--save, -s]
 
 # Generate only the PR description
 prpolish generate-desc [--template <str|path>] [--save, -s]
-
 ```
 
-## Flags 
-- `-save, -s`: allows you to save either the title, description, or both (default) to a draft file
-- `--fast, -f`: automatically creates the PR and commits it
+- `--save, -s`: Save title, description, or both to draft files.
+- `--fast, -f`: Automatically create the PR and commit it.
 
 ---
 
-## LLM-Powered PR Descriptions
+## ⚙️ Requirements
 
-1. Get your OpenAI API key from <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI</a>
-2. Set it in your environment:
+- Python 3.7+
+- [OpenAI API key](https://platform.openai.com/account/api-keys) (for AI features)
+- [GitHub CLI](https://cli.github.com/) (for auto PR creation, optional)
 
-```bash
-export OPENAI_API_KEY=sk-...
-```
+NOTE: Without an API key, the generations fall back on heuristic measures, but they are not as accurate usually.
+---
 
-If no API key is set, the tool falls back to a heuristic generator.
+## 📝 Custom PR Templates
+
+Provide your own template using the `--template` flag (string or file path).  
+If a `pull_request_template.md` exists, prpolish will auto-detect and use it.
 
 ---
 
-## Custom PR Templates
+## ❓ FAQ & Troubleshooting
 
-You can provide your own template for the PR description using the `--template` flag. This can be either a string or a path to a file containing your template. 
+<details>
+<summary><b>What if I don't have an OpenAI API key?</b></summary>
 
-If you already have a `pull_request_template.md`, it will automatically detect it and use it.
+- PR title/description generation will use smart heuristics instead of AI.
+- Vibe checks will not work without an API key.
+</details>
+
+<details>
+<summary><b>What if I don't have GitHub CLI (gh)?</b></summary>
+
+You can still copy the PR title/description and create the PR manually.
+</details>
+
+<details>
+<summary><b>Can I use my team's PR template?</b></summary>
+
+Yes! Use `--template` or place a `pull_request_template.md` in your repo.
+</details>
 
 ---
 
-## License
+## 📄 License
 
-<p align="center">
-  <a href="https://github.com/yashg4509/prpolish/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yashg4509/prpolish?style=flat-square&color=success" alt="License"></a>
-</p>
+[MIT](LICENSE)  
+_Made by [@yashg4509](https://github.com/yashg4509)_
 
-<p align="center">
-  <sub>Made by <a href="https://github.com/yashg4509">@yashg4509</a></sub>
-</p> 
+---
+
+## 🏆 Shoutout
+
+<div align="center" style="margin: 2em 0;">
+  <img src="https://graphite.dev/favicon.ico" width="32" height="32" alt="Graphite logo"/>
+  <br/>
+  <b>Big thanks to <a href="https://graphite.dev/">Graphite</a> for their <a href="https://graphite.dev/guides/topic/pull-requests">excellent guides on PR best practices</a>, which inspired the prompts and structure in prpolish.</b>
+</div>
