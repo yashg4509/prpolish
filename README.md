@@ -45,6 +45,12 @@ prpolish generate
 - Optionally, run vibe checks to catch low-quality commits or missing tests.
 - Use your own PR templates, or let prpolish auto-detect them.
 
+<p align="center">
+  <a href="https://x.com/yash_s_gupta/status/1936104143846097068">
+    <img src="https://img.shields.io/badge/Watch%20Demo-on%20%F0%9D%95%8F-000000?style=for-the-badge&logo=x&logoColor=white" alt="Demo on 𝕏"/>
+  </a>
+</p>
+
 ---
 
 ## 🚧 Features
