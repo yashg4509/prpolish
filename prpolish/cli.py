@@ -7,6 +7,7 @@ import shutil
 import sys
 from git import Repo
 from git.exc import InvalidGitRepositoryError, NoSuchPathError
+import importlib.metadata
 
 # Helper decorator to require a git repo for commands
 def require_git_repo(f):
@@ -20,9 +21,11 @@ def require_git_repo(f):
     return wrapper
 
 @click.group()
+@click.version_option(importlib.metadata.version("prpolish"), '--version', '-v', message="%(version)s")
 def main():
     """Entry point"""
     pass
+
 
 @main.command()
 @click.option('--template', default=None, help='Custom PR description template (string or path to file)')
@@ -122,37 +125,24 @@ def generate(template, save, fast):
         # Remove the section entirely if not adding resources
         desc = related_section_pattern.sub('', desc)
 
-    # --- Helper: Edit in Editor ---
-    def edit_in_editor(initial_text):
-        """
-        Open the user's default editor to edit the provided text.
-        Returns the edited content as a string.
-        """
-        EDITOR = os.environ.get('EDITOR', 'vim')
-        with tempfile.NamedTemporaryFile(suffix=".md", mode='w+', delete=False) as tf:
-            tf.write(initial_text)
-            tf.flush()
-            click.edit(filename=tf.name)
-            tf.seek(0)
-            content = tf.read()
-        os.unlink(tf.name)
-        return content
-
-    # Output logic
-    if fast:
-        # Fast mode: no prompts, just create PR
-        remote = "origin"
+    # Helper to try creating a PR using gh
+    def try_create_pr_with_gh(title, desc, branch_name, remote="origin"):
         try:
             click.echo(f"Pushing branch {branch_name} to {remote}...")
             subprocess.run(["git", "push", "-u", remote, branch_name], check=True)
         except Exception as e:
             click.echo(f"[ERROR] Failed to push branch: {e}")
-            return
+            return False
         try:
             click.echo("Opening PR using GitHub CLI (gh)...")
-            # Check if gh is installed and authenticated, prompt user if not
             if not check_gh_setup_interactive():
-                return
+                # After interactive setup, check if gh is now set up
+                if check_gh_setup():
+                    click.echo("gh setup complete. Retrying PR creation...")
+                    return try_create_pr_with_gh(title, desc, branch_name, remote)
+                else:
+                    click.echo("gh setup was not completed. Skipping PR creation.")
+                    return False
             subprocess.run([
                 "gh", "pr", "create",
                 "--title", title,
@@ -160,9 +150,16 @@ def generate(template, save, fast):
                 "--head", branch_name
             ], check=True)
             click.echo("PR created!")
+            return True
         except Exception as e:
             click.echo("[ERROR] Failed to create PR using GitHub CLI. You can create the PR manually using the title and description below.")
             click.echo("\nPR Title:\n" + title + "\n\nPR Description:\n" + desc + "\n")
+            return False
+
+    # Output logic
+    if fast:
+        # Fast mode: no prompts, just create PR
+        try_create_pr_with_gh(title, desc, branch_name)
         # Optionally save if --save is set
         if save and save in ('title', 'both'):
             draft_path = os.path.join(repo_path, "PR_TITLE_DRAFT.txt")
@@ -182,7 +179,7 @@ def generate(template, save, fast):
         click.echo(f"\nEdited PR Title:\n{title}\n")
     click.echo(f"\n📝 PR Description:\n{desc}\n")
     if click.confirm("Edit PR description in your editor?", default=False):
-        desc = edit_in_editor(desc)
+        desc = click.edit(desc, extension=".md") or desc
         click.echo(f"\nEdited PR Description:\n{desc}\n")
     if save and save in ('title', 'both'):
         draft_path = os.path.join(repo_path, "PR_TITLE_DRAFT.txt")
@@ -208,29 +205,7 @@ def generate(template, save, fast):
 
     # Option to create PR automatically
     if click.confirm("Would you like to create a PR automatically (push branch and open PR)?", default=False):
-        remote = "origin"
-        # Push branch
-        try:
-            click.echo(f"Pushing branch {branch_name} to {remote}...")
-            subprocess.run(["git", "push", "-u", remote, branch_name], check=True)
-        except Exception as e:
-            click.echo(f"[ERROR] Failed to push branch: {e}")
-            return
-        # Try to open PR using GitHub CLI if available
-        try:
-            click.echo("Opening PR using GitHub CLI (gh)...")
-            if not check_gh_setup_interactive():
-                return
-            subprocess.run([
-                "gh", "pr", "create",
-                "--title", title,
-                "--body", desc,
-                "--head", branch_name
-            ], check=True)
-            click.echo("PR created!")
-        except Exception as e:
-            click.echo("[ERROR] Failed to create PR using GitHub CLI. You can create the PR manually using the title and description below.")
-            click.echo("\nPR Title:\n" + title + "\n\nPR Description:\n" + desc + "\n")
+        try_create_pr_with_gh(title, desc, branch_name)
 
 @main.command('generate-title')
 @click.option('--template', default=None, help='Custom PR title template (string or path to file)')
@@ -328,14 +303,7 @@ def generate_desc(template, save):
         desc = related_section_pattern.sub('', desc)
     click.echo(f"\n📝 PR Description:\n{desc}\n")
     if click.confirm("Edit PR description in your editor?", default=False):
-        EDITOR = os.environ.get('EDITOR', 'vim')
-        with tempfile.NamedTemporaryFile(suffix=".md", mode='w+', delete=False) as tf:
-            tf.write(desc)
-            tf.flush()
-            click.edit(filename=tf.name)
-            tf.seek(0)
-            desc = tf.read()
-        os.unlink(tf.name)
+        desc = click.edit(desc, extension=".md") or desc
         click.echo(f"\nEdited PR Description:\n{desc}\n")
     if save:
         draft_path = os.path.join(repo_path, "PR_DESCRIPTION_DRAFT.txt")
