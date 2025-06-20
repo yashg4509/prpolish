@@ -21,8 +21,16 @@
 > - Missing tests or unclear testing instructions
 > - Inconsistent PR templates across teams
 
-**prpolish** fixes this by using AI (OpenAI GPT) to generate high-quality, context-aware PR titles and descriptions, and to run "vibe checks" for PR quality—all from your terminal.
+**prpolish** fixes this by using AI to generate high-quality, context-aware PR titles and descriptions, and to run "vibe checks" for PR quality—all from your terminal.
 
+---
+
+## ⚙️ Requirements
+
+- Python 3.7+
+- [OpenAI API key](https://platform.openai.com/account/api-keys) (for AI features)
+- [GitHub CLI](https://cli.github.com/) (for auto PR creation, optional)
+  
 ---
 
 ## ⚡ Quickstart
@@ -39,13 +47,13 @@ prpolish generate
 
 ---
 
-## Features
+## 🚧 Features
 
 - **AI-Powered PR Title & Description Generator**: Context-aware, customizable, and always editable.
 - **Vibe Check Warnings**: Flags low-quality commits, missing tests, and more.
 - **CLI Interface**: Simple, interactive, and scriptable.
 - **Custom Templates**: Use your own PR templates (string or file).
-- **LLM-Powered, with Fallbacks**: Uses OpenAI GPT for best results, with smart heuristics if no API key.
+- **LLM-Powered**: Uses OpenAI API for best results
 - **Failsafe Defaults**: Always allows user editing and review.
 
 ---
@@ -55,7 +63,7 @@ prpolish generate
 1. **Analyzes your branch:**  
    Reads your commit messages, changed files, and branch name.
 2. **Generates PR content:**  
-   Uses OpenAI GPT (if available) or smart heuristics to create a professional PR title and description.
+   Uses OpenAI GPT to create a professional PR title and description.
 3. **Runs vibe checks:**  
    Optionally, flags issues like vague commits or missing tests. 
 4. **Lets you edit and save:**  
@@ -80,14 +88,6 @@ prpolish generate-desc [--template <str|path>] [--save, -s]
 
 - `--save, -s`: Save title, description, or both to draft files.
 - `--fast, -f`: Automatically create the PR and commit it.
-
----
-
-## ⚙️ Requirements
-
-- Python 3.7+
-- [OpenAI API key](https://platform.openai.com/account/api-keys) (for AI features)
-- [GitHub CLI](https://cli.github.com/) (for auto PR creation, optional)
 
 ---
 
