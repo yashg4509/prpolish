@@ -114,9 +114,8 @@ def generate(template, save, fast):
             lines.append(line.strip())
         # Label resource links using heuristics (Jira, GitHub, etc)
         labeled_lines, other_lines = pr_description.label_related_resource_links(lines)
-        user_related = '\n'.join(labeled_lines)
-        if other_lines:
-            user_related += '\n\n## Other\n' + '\n'.join(f'- {line}' for line in other_lines)
+        all_lines = labeled_lines + other_lines
+        user_related = '\n'.join(f'- {line}' for line in all_lines)
         if user_related:
             user_related += '\n'  # Ensure a blank line after the last resource
         # Replace the section
@@ -292,13 +291,17 @@ def generate_desc(template, save):
             if not line.strip():
                 break
             lines.append(line.strip())
+        # Label resource links using heuristics (Jira, GitHub, etc)
         labeled_lines, other_lines = pr_description.label_related_resource_links(lines)
-        user_related = '\n'.join(labeled_lines)
-        if other_lines:
-            user_related += '\n\n## Other\n' + '\n'.join(f'- {line}' for line in other_lines)
+        all_lines = labeled_lines + other_lines
+        user_related = '\n'.join(f'- {line}' for line in all_lines)
         if user_related:
-            user_related += '\n'
-        desc = related_section_pattern.sub(r"\1" + user_related + r"\3", desc)
+            user_related += '\n'  # Ensure a blank line after the last resource
+        # Replace the section
+        if match:
+            desc = related_section_pattern.sub(r"\1" + user_related + r"\3", desc)
+        else:
+            desc += "\n\n# Related Resources\n" + user_related
     else:
         desc = related_section_pattern.sub('', desc)
     click.echo(f"\n📝 PR Description:\n{desc}\n")
